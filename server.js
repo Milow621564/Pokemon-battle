@@ -6,7 +6,7 @@ const { WebSocketServer } = require('ws');
 
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
-const GAME_FILE = path.join(__dirname, 'pokemon_arena_v21_multiplayer.html');
+const GAME_FILE = path.join(__dirname, 'index.html');
 const rooms = new Map();
 
 function send(ws, msg){ if(ws.readyState === 1) ws.send(JSON.stringify(msg)); }
@@ -29,7 +29,7 @@ function leave(p){
 const server=http.createServer((req,res)=>{
   let u=new URL(req.url,`http://${req.headers.host}`);
   if(u.pathname==='/health'){res.writeHead(200,{'content-type':'application/json'});return res.end(JSON.stringify({ok:true,rooms:rooms.size}));}
-  if(u.pathname==='/'||u.pathname==='/pokemon_arena_v21_multiplayer.html'){
+  if(u.pathname==='/'||u.pathname==='/index.html'||u.pathname==='/pokemon_arena_v21_multiplayer.html'){
     const data=fs.readFileSync(GAME_FILE);res.writeHead(200,{'content-type':'text/html; charset=utf-8','cache-control':'no-store'});return res.end(data);
   }
   res.writeHead(404);res.end('Not found');
